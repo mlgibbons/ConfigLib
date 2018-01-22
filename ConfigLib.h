@@ -10,39 +10,10 @@
 #endif
 
 // *****************************************************************************
-// String parsing functions - handy in extracting fields from messages
-// *****************************************************************************
-
-String getField(String* msg, char fieldSep);
-String getFieldOfSize(String* msg, int numChars);
-
-// *****************************************************************************
-// Misc utility functions
-// *****************************************************************************
-
-int readLineFromSerial(int readch, char*buffer, int bufferLen);
-
-char* find_first_non_white_space(const char *line);
-
-
-// *****************************************************************************
 // Config - functions to allow sketch config to be stored in EPROM
 // *****************************************************************************
 
 #define EPROM_TAG_SIZE 4
-
-int writeBytesToEEPROM(int location, const unsigned char* buffer, int bufferLen, unsigned char* crc);
-
-int readBytesFromEEPROM(int location, int numBytes, unsigned char* buffer, unsigned char* crc);
-
-void dumpBytesFromEEPROMToConsole(int location, int numBytes);
-
-int writeBlockToEEPROM(const char* tag, const unsigned char* bufferStart, int bufferLen, int& blockStartPos, int& blockLen);
-
-int readBlockFromEEPROM(const char* tag, unsigned char* buffer, int bufferLen, int&bytesRead, int& blockStartPos, int& blockLen);
-
-void dumpBlocksToConsole(int startPos = 0);
-
 
 class Configurator 
 {

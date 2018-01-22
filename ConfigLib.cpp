@@ -43,8 +43,6 @@ String Configurator::getField(String* msg, char fieldSep)
 }  
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 String Configurator::getFieldOfSize(String* msg, int numChars)
 {
     String result = "";
@@ -57,8 +55,6 @@ String Configurator::getFieldOfSize(String* msg, int numChars)
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 int Configurator::readLineFromSerial(int readch, char*buffer, int bufferLen)
 {
     static int pos = 0;
@@ -104,8 +100,6 @@ int Configurator::readLineFromSerial(int readch, char*buffer, int bufferLen)
 #define EPROM_CONFIG_END   1024
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 boolean Configurator::atBlockStart(int location) {
 	boolean rc = false;
 
@@ -121,8 +115,6 @@ boolean Configurator::atBlockStart(int location) {
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 boolean Configurator::checkBlockTagMatches(int location, const char* tag) 
 {
 	boolean rc = false;
@@ -139,8 +131,6 @@ boolean Configurator::checkBlockTagMatches(int location, const char* tag)
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 int Configurator::locateBlock(const char* tag, int startPos=0)
 {
 	int rc;
@@ -180,8 +170,6 @@ int Configurator::locateBlock(const char* tag, int startPos=0)
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 int Configurator::writeBytesToEEPROM(int location, const unsigned char* buffer, int bufferLen, unsigned char* crc)
 {
 	for (unsigned int t = 0; t<bufferLen; t++) {
@@ -196,8 +184,6 @@ int Configurator::writeBytesToEEPROM(int location, const unsigned char* buffer, 
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 int Configurator::writeByteToEEPROM(int location, int numBytes, char byte)
 {
 	for (unsigned int t = 0; t<numBytes; t++) {
@@ -206,8 +192,6 @@ int Configurator::writeByteToEEPROM(int location, int numBytes, char byte)
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 int Configurator::writeBlockToEEPROM(const char* tag, const unsigned char* buffer, int bufferLen, int& blockStartPos, int& blockLen)
 {
 	if (strlen(tag) < EPROM_TAG_SIZE) {
@@ -269,8 +253,6 @@ int Configurator::writeBlockToEEPROM(const char* tag, const unsigned char* buffe
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 int Configurator::readBytesFromEEPROM(int location, int numBytes, unsigned char* buffer, unsigned char* crc)
 {
 	for (unsigned int t = 0; t<numBytes; t++) {
@@ -284,8 +266,6 @@ int Configurator::readBytesFromEEPROM(int location, int numBytes, unsigned char*
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 int Configurator::readBlockAtPosFromEEPROM(int blockLocation, unsigned char* buffer, int bufferLen, int& bytesRead, int& blockLen, char* tag=NULL)
 {
 	int currReadPos = blockLocation;
@@ -331,8 +311,6 @@ int Configurator::readBlockAtPosFromEEPROM(int blockLocation, unsigned char* buf
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 int Configurator::readBlockFromEEPROM(const char* tag, unsigned char* buffer, int bufferLen, int& bytesRead, int& blockStartPos, int& blockLen)
 {
 	// find the block
@@ -343,8 +321,6 @@ int Configurator::readBlockFromEEPROM(const char* tag, unsigned char* buffer, in
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 void Configurator::dumpBytesFromEEPROMToConsole(int location, int numBytes)
 {
 	for (unsigned int t = 0; t<numBytes; t++) {
@@ -356,8 +332,6 @@ void Configurator::dumpBytesFromEEPROMToConsole(int location, int numBytes)
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 void Configurator::dumpBlocksToConsole(int startPos)
 {
 	int currPos = startPos;
@@ -397,8 +371,6 @@ void Configurator::dumpBlocksToConsole(int startPos)
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 void Configurator::printConfigCommandHelp(void(*printConfigItemHelp)()) 
 {
 	log(F("Commands are"));
@@ -425,8 +397,6 @@ void Configurator::printConfigCommandHelp(void(*printConfigItemHelp)())
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 void Configurator::writeConfigToEEPROM(const char* tag, const unsigned char* config, int configLen, int _blockStartPos = -1) {
 	log(F("Writing config to EEPROM"));
 
@@ -443,8 +413,6 @@ void Configurator::writeConfigToEEPROM(const char* tag, const unsigned char* con
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 void Configurator::loadConfigFromEEPROM(const char* tag, unsigned char* config, int configLen) {
 	log(F("Reading config from EEPROM."));
 
@@ -459,8 +427,6 @@ void Configurator::loadConfigFromEEPROM(const char* tag, unsigned char* config, 
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 void Configurator::runConfigUI(const char* configTag,
 	unsigned char* config,
 	int configLen,
@@ -568,8 +534,6 @@ void Configurator::runConfigUI(const char* configTag,
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 void Configurator::initConfig(const char* configTag,
 	unsigned char* config,
 	int configLen,
@@ -620,10 +584,7 @@ void Configurator::initConfig(const char* configTag,
 }
 
 
-
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 void Configurator::logToStream(const char * fsh)
 {
     if ( (m_stream==NULL) ) { return; }
@@ -632,8 +593,6 @@ void Configurator::logToStream(const char * fsh)
 }
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 void Configurator::log(const __FlashStringHelper * fmt, ...) 
 {
     char msgBuffer[m_bufferSize];
@@ -650,8 +609,6 @@ void Configurator::log(const __FlashStringHelper * fmt, ...)
 
 
 //#!*******************************************************************************************
-//*
-//*********************************************************************************************
 char* Configurator::find_first_non_white_space(const char *line)
 {
     char * rc = (char *) line;
@@ -663,8 +620,8 @@ char* Configurator::find_first_non_white_space(const char *line)
 
 //#!**********************************************************************************
 // Computes a 8-bit CRC
+// Dummy implementation - replace as needed but take care with memory usage
 // ***********************************************************************************
-
 void Configurator::crc8(unsigned char *crc, unsigned char m)
 {
     *crc = 'X';
