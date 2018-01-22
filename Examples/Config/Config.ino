@@ -54,10 +54,10 @@ void setConfigItem(const char* key, const char* val) {
 void setup()
 {
 	Serial.begin(57600);
-  Serial.print(String(F("Setup start\n")).c_str());
+  	Serial.print(String(F("Setup start\n")).c_str());
 
-  Configurator configurator(&Serial, 128);
-  configurator.initConfig(CONFIG_TAG, (unsigned char *) &config, sizeof(Config), printConfigItemHelp, printConfig, setConfigItem);
+  	Configurator configurator(&Serial, 128);
+  	configurator.initConfig(CONFIG_TAG, (unsigned char *) &config, sizeof(Config), printConfigItemHelp, printConfig, setConfigItem);
   
 	Serial.print(String(F("Setup complete\n")).c_str());
 }
