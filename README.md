@@ -1,4 +1,7 @@
 
+## Summary
+A simple library which allows for the storing, reading and modification by end users of sketch config at runtime.
+
 ## Why Is This Needed?
 How often have you written an Arduino sketch and hard coded the config into it?
 Maybe you put into EEPROM so that you could keep it out of the sketch but then you had run 
