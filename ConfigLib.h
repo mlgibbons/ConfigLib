@@ -9,17 +9,54 @@
 	#include "WProgram.h"
 #endif
 
-// *****************************************************************************
-// Config - functions to allow sketch config to be stored in EPROM
-// *****************************************************************************
+/*****************************************************************************
+
+Configurator - Allows sketch config to be stored in EEPROM and optionally modified 
+and saved at runtime as part of sketch startup.
+
+It's simple to hold your sketch config in code and compile it in but then how do you change 
+it when the device is in-situ or what about if you have multiple devices? Do you modify the 
+sketch for each device and recompile/reburn? 
+
+You really want to be able to at runtime see the config and modify it before the main
+part of the sketch runs and this class allows you to do that.
+
+Simply provides implementations of the three callback functions, create an instance
+and call initConfig and the class will try and load the config from EEPROM, display
+the config and prompt the user to trigger the config process.
+If triggered they can then display the config, modify it, save it to EEPROM etc.
+Once complete they can exit and the sketch will continue loading. 
+
+*****************************************************************************/
 
 #define EPROM_TAG_SIZE 4
 
 class Configurator 
 {
     public:
-        Configurator(Stream* stream, int bufferSize);
+        /* 
+           Constructor
+           params:
+             stream: Stream to display onto and consume input from
+             configSelectPeriod: time in msecs to wait for user to initiate config process
+             logBufferSize: number of chars to reserve to use in logging to the stream
+        */
+        Configurator(Stream* stream, int configSelectPeriod, int logBufferSize);
         
+        
+        /*
+            initConfig
+            Call to trigger the config process. 
+            Any config stored in flash will be read into the config parameter.
+            The user may then, within a default period, trigger the config process allowing them to modify the config and store to flash.
+            params:
+                configTag: tag assigned to the block used to hold the config in flash
+                config: pointer to the config structure which will be loaded / modified
+                configLen: length of config structure
+                printConfigItemHelp: pointer to callback function which displays help on what can be configured
+                printConfig: pointer to callback function which displays the config.
+                setConfigItem: pointer to callback function which is called in response to user trying to set a config item
+        */    
         void initConfig(const char* configTag,
                     unsigned char* config,
                     int configLen,
@@ -37,7 +74,8 @@ class Configurator
                         void(*setConfigItem)(const char*, const char*));
         
     	Stream* m_stream = NULL;
-        int m_bufferSize;
+        int m_logBufferSize;
+        int m_configSelectPeriod;
     
         void log(const __FlashStringHelper * fsh, ...);
         void logToStream(const char* msg);

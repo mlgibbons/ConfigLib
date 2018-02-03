@@ -9,10 +9,11 @@
 
 
 //#!*******************************************************************************************
-Configurator::Configurator(Stream* stream, int bufferSize=128) 
+Configurator::Configurator(Stream* stream, int configSelectPeriod, int logBufferSize=128) 
 { 
     m_stream = stream; 
-    m_bufferSize = bufferSize;
+    m_logBufferSize = logBufferSize;
+    m_configSelectPeriod = configSelectPeriod;
 }
                 
 //#!*******************************************************************************************
@@ -390,7 +391,7 @@ void Configurator::printConfigCommandHelp(void(*printConfigItemHelp)())
 	log(F("H       = Print this help text"));
 	log(F("E       = Erase all config in EEPROM"));
 	log(F("C       = Dump all config blocks to console"));
-	log(F("D:P,N   = Dump N bytes from EEPROM at pos P console"));
+	log(F("D:P,N   = Dump N bytes from EEPROM at pos P to console"));
 	log(F("Q       = Quit"));
 
 	log(F("---------------------------------------------"));
@@ -469,9 +470,12 @@ void Configurator::runConfigUI(const char* configTag,
 			// ** DUMP **************************************************************	
 			else if (lineBuffer[0] == 'D') {
 				log(F("Dumping EEPROM contents"));
-				//String posStr = getField(&lineBuffer, ',');
-				//String numStr = getField(&lineBuffer, ',');
-				//dumpBytesFromEEPROMToConsole(posStr.toInt(), numStr.toInt());
+                char* cmd = strtok(lineBuffer, ":");
+                char* posStr = strtok(NULL, ",");
+                char* numStr = strtok(NULL, ",");
+                int pos = atoi(posStr);
+                int num = atoi(numStr);
+				dumpBytesFromEEPROMToConsole(pos, num);
 				log(F("Done"));
                 strcpy(lineBuffer, "");
             }
@@ -534,21 +538,20 @@ void Configurator::runConfigUI(const char* configTag,
 }
 
 //#!*******************************************************************************************
-void Configurator::initConfig(const char* configTag,
-	unsigned char* config,
-	int configLen,
-	void(*printConfigItemHelp)(),
-	void(*printConfig)(),
-	void(*setConfigItem)(const char*, const char*))
+void Configurator::initConfig(  const char* configTag,
+                                unsigned char* config,
+                                int configLen,
+                                void(*printConfigItemHelp)(),
+                                void(*printConfig)(),
+                                void(*setConfigItem)(const char*, const char*))
 {
-	int  initPeriod = 10;        // time to wait for user to enter config mode  in secs
-	int  initCycleDelay = 1000;   // cycle time in ms
-	long initPeriodCountMax = (initPeriod * 1000) / initCycleDelay;
+	int  initCycleDelay = 500;   // cycle time in ms
+	long initPeriodCountMax = m_configSelectPeriod / initCycleDelay;
 	long initPeriodCountCur = 0;
 
 	char lineBuffer[32];
 
-	log(F("Starting up in [%d]"), initPeriod);
+	log(F("Starting up in [%d] ms"), m_configSelectPeriod);
 	log(F("Using config"));
 
 	loadConfigFromEEPROM(configTag, config, configLen);
@@ -595,16 +598,16 @@ void Configurator::logToStream(const char * fsh)
 //#!*******************************************************************************************
 void Configurator::log(const __FlashStringHelper * fmt, ...) 
 {
-    char msgBuffer[m_bufferSize];
+    char logMsgBuffer[m_logBufferSize];
     va_list args;
     va_start(args, fmt);
 #ifdef __AVR__
-    vsnprintf_P(msgBuffer, sizeof(msgBuffer), (const char *)fmt, args); // progmem for AVR
+    vsnprintf_P(logMsgBuffer, sizeof(logMsgBuffer), (const char *)fmt, args); // progmem for AVR
 #else
-    vsnprintf(msgBuffer, sizeof(msgBuffer), (const char *)fmt, args); // for the rest of the world
+    vsnprintf(logMsgBuffer, sizeof(logMsgBuffer), (const char *)fmt, args); // for the rest of the world
 #endif
     va_end(args);
-    logToStream(msgBuffer);    
+    logToStream(logMsgBuffer);    
 }
 
 
