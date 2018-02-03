@@ -69,21 +69,21 @@ D:P,N   = Dump N bytes from EEPROM at pos P to console
 Q       = Quit
 ---------------------------------------------
 
-P\n
+P\n      <<<<<<<<<<<<<<<<<<<<<<<< Print out config
 Current config
   RFM_NODE_ID     = [100]
   RFM_NETWORK_ID  = [199]
   NODE_ID         = [AAA]
 
-S:RFM_NODE_ID,122
+S:RFM_NODE_ID,122      <<<<<<<<<<<<<<<<<<<<<<<< Change a config item
 Setting item [RFM_NODE_ID] to [122]
 
-W\n
+W\n   <<<<<<<<<<<<<<<<<<<<<<<< Store new config to EEPROM
 Writing config to EEPROM
 Writing block at [0]
 Successfully wrote config to EEPROM
 
-R\n
+R\n   <<<<<<<<<<<<<<<<<<<<<<<< Read config from EEPROM
 Reading config from EEPROM.
 Successfully read config from EEPROM.
 Current config
@@ -91,7 +91,7 @@ Current config
   RFM_NETWORK_ID  = [199]
   NODE_ID         = [AAA]
 
-Q\n
+Q\n   <<<<<<<<<<<<<<<<<<<<<<<< Quit config mode
 Exiting interactive config mode
 Continuing startup
 Setup complete
