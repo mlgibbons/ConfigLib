@@ -372,7 +372,7 @@ void Configurator::dumpBlocksToConsole(int startPos)
 }
 
 //#!*******************************************************************************************
-void Configurator::printConfigCommandHelp(void(*printConfigItemHelp)()) 
+void Configurator::printConfigCommandHelp(void(*printConfigItemHelp)(Configurator*)) 
 {
 	log(F("Commands are"));
 	log(F("S:K,V = Set item K to value V"));
@@ -380,7 +380,7 @@ void Configurator::printConfigCommandHelp(void(*printConfigItemHelp)())
 
     if (printConfigItemHelp != NULL) {
         log(F("Item Id : Item Name : Value"));
-        printConfigItemHelp();
+        printConfigItemHelp(this);
     }
 
 	log(F("---------------------------------------------"));
@@ -431,9 +431,9 @@ void Configurator::loadConfigFromEEPROM(const char* tag, unsigned char* config, 
 void Configurator::runConfigUI(const char* configTag,
 	unsigned char* config,
 	int configLen,
-	void(*printConfigItemHelp)(),
-	void(*printConfig)(),
-	void(*setConfigItem)(const char*, const char*))
+	void(*printConfigItemHelp)(Configurator*),
+	void(*printConfig)(Configurator*),
+	void(*setConfigItem)(Configurator*,const char*, const char*))
 {
 	char lineBuffer[32];
 
@@ -490,7 +490,7 @@ void Configurator::runConfigUI(const char* configTag,
 
 			// ** PRINT *************************************************************	
 			else if (strcmp(lineBuffer,"P") == 0) {
-				printConfig();
+				printConfig(this);
                 strcpy(lineBuffer, "");
             }
 
@@ -523,7 +523,7 @@ void Configurator::runConfigUI(const char* configTag,
 
 				log(F("Setting item [%s] to [%s]"), key, val);
 
-				setConfigItem(key, val);
+				setConfigItem(this, key, val);
 
                 strcpy(lineBuffer, "");
             }
@@ -541,9 +541,9 @@ void Configurator::runConfigUI(const char* configTag,
 void Configurator::initConfig(  const char* configTag,
                                 unsigned char* config,
                                 int configLen,
-                                void(*printConfigItemHelp)(),
-                                void(*printConfig)(),
-                                void(*setConfigItem)(const char*, const char*))
+                                void(*printConfigItemHelp)(Configurator*),
+                                void(*printConfig)(Configurator*),
+                                void(*setConfigItem)(Configurator*, const char*, const char*))
 {
 	int  initCycleDelay = 500;   // cycle time in ms
 	long initPeriodCountMax = m_configSelectPeriod / initCycleDelay;
@@ -555,7 +555,7 @@ void Configurator::initConfig(  const char* configTag,
 	log(F("Using config"));
 
 	loadConfigFromEEPROM(configTag, config, configLen);
-	printConfig();
+	printConfig(this);
 
 	log(F("Press 'C' and 'Enter' to enter config mode or 'Q' to continue immediately"));
 

@@ -3,23 +3,6 @@
 #include <ConfigLib.h>
 #include <EEPROM.h>
 
-//:TODO:Move utility function into Configurator class
-
-// Utility function
-void print(const __FlashStringHelper * fmt, ...)
-{
-    char msgBuffer[128];
-    va_list args;
-    va_start(args, fmt);
-#ifdef __AVR__
-    vsnprintf_P(msgBuffer, sizeof(msgBuffer), (const char *)fmt, args); // progmem for AVR
-#else
-    vsnprintf(msgBuffer, sizeof(msgBuffer), (const char *)fmt, args); // for the rest of the world
-#endif
-    va_end(args);
-    Serial.println(msgBuffer);
-}
-
 
 // Config structure which will be read from EEPROM
 // with some default values in case we can't read any config from EEPROM
@@ -29,23 +12,26 @@ Config config = { 100, 199, "AAA" };
 #define CONFIG_TAG "ESWC"
 
 // Callback function which prints out information on the config items and values
-void printConfigItemHelp() {
-	print(F("RFM_NODE_ID       RFM_NODE_ID     int"));
-	print(F("RFM_NETWORK_ID    RFM_NETWORK_ID  int"));
-	print(F("NODE_ID           NODE_ID         char[%d]"), sizeof(config.nodeId));
+void printConfigItemHelp(Configurator* configurator) 
+{
+	configurator->log(F("RFM_NODE_ID       RFM_NODE_ID     int"));
+	configurator->log(F("RFM_NETWORK_ID    RFM_NETWORK_ID  int"));
+	configurator->log(F("NODE_ID           NODE_ID         char[%d]"), sizeof(config.nodeId));
 }
 
 // Callback function which prints out the config
-void printConfig() {
-	print(F("Current config"));
-	print(F("  RFM_NODE_ID     = [%d]"), config.rfmNodeId);
-	print(F("  RFM_NETWORK_ID  = [%d]"), config.rfmNetworkId);
-	print(F("  NODE_ID         = [%s]"), config.nodeId);
+void printConfig(Configurator* configurator) 
+{
+	configurator->log(F("Current config"));
+	configurator->log(F("  RFM_NODE_ID     = [%d]"), config.rfmNodeId);
+	configurator->log(F("  RFM_NETWORK_ID  = [%d]"), config.rfmNetworkId);
+	configurator->log(F("  NODE_ID         = [%s]"), config.nodeId);
 }
 
 
 // Callback function which sets the config item key to the value val
-void setConfigItem(const char* key, const char* val) {
+void setConfigItem(Configurator* configurator, const char* key, const char* val) 
+{
 	if (strcmp(key, "RFM_NODE_ID")==0) {
 		config.rfmNodeId = atoi(val);
 	}
@@ -56,7 +42,7 @@ void setConfigItem(const char* key, const char* val) {
 		int _len = strlcpy(config.nodeId, val, sizeof(config.nodeId));
 	}
 	else {
-		print(F("Unknown key type"));
+		configurator->log(F("Unknown key type"));
 	}
 }
 

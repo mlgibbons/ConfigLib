@@ -60,28 +60,34 @@ class Configurator
         void initConfig(const char* configTag,
                     unsigned char* config,
                     int configLen,
-                    void(*printConfigItemHelp)(),
-                    void(*printConfig)(),
-                    void(*setConfigItem)(const char*, const char*));    
-                                        
+                    void(*printConfigItemHelp)(Configurator*),
+                    void(*printConfig)(Configurator*),
+                    void(*setConfigItem)(Configurator*,const char*, const char*));    
+
+        /*
+            Logs the string to the stream after using 
+            printf to handle the string substitution of the varargs
+        */
+        void log(const __FlashStringHelper * fsh, ...);
+
+                    
     protected:
     
         void runConfigUI(const char* configTag,
                         unsigned char* config,
                         int configLen,
-                        void(*printConfigItemHelp)(),
-                        void(*printConfig)(),
-                        void(*setConfigItem)(const char*, const char*));
+                        void(*printConfigItemHelp)(Configurator*),
+                        void(*printConfig)(Configurator*),
+                        void(*setConfigItem)(Configurator*, const char*, const char*));
         
     	Stream* m_stream = NULL;
         int m_logBufferSize;
         int m_configSelectPeriod;
     
-        void log(const __FlashStringHelper * fsh, ...);
         void logToStream(const char* msg);
         
         void dumpBlocksToConsole(int startPos);
-        void printConfigCommandHelp(void(*printConfigItemHelp)());
+        void printConfigCommandHelp(void(*printConfigItemHelp)(Configurator*));
 
         void sprintf_vargs(char* buffer, int bufferlen, char * format, ...);
         String getField(String* msg, char fieldSep) ;
