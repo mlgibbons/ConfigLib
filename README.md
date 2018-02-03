@@ -26,7 +26,7 @@ However, if they do select config mode they will be presented with a menu which 
 They can do things like display the config, modify an item in it and write it to EEPROM.
 
 Once they are done they quit the config process through entering "Q" and the sketch continues.
-
+ 
 
 This is an example of how the configurator lib works
 All user input is indicated by <<characters-entered>>
