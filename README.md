@@ -1,4 +1,5 @@
 
+## Why Is This Needed?
 How often have you written an Arduino sketch and hard coded the config into it?
 Maybe you put into EEPROM so that you could keep it out of the sketch but then you had run 
 burn an EEPROM sketch to change the config and the reburn your actual sketch.
@@ -14,6 +15,7 @@ The library requires four things to be able to do it's magic:
  - a pointer to the config and a tag for it
  - three callback functions that interface to the config (as the library knows nothing about what is in the config)
 
+## The Process
 At sketch startup the library will try and find the config in EEPROM and if found will 
 load it into the memory pointed to by the passed in config pointer. If none is found then 
 it will do nothing and the defaults values which the config already contains will be used.
@@ -27,10 +29,11 @@ They can do things like display the config, modify an item in it and write it to
 
 Once they are done they quit the config process through entering "Q" and the sketch continues.
  
+## An Example Usage
 
 This is an example of how the configurator lib works
-All user input is indicated by <<characters-entered>>
 
+```
 Setup start
 Starting up in [10000] ms
 Using config
@@ -45,7 +48,7 @@ Press 'C' and 'Enter' to enter config mode or 'Q' to continue immediately
 .
 .
 
-<<C\n>>
+C\n   <<<<<<<<<<<<<<<<<<<<<<<< Enter config mode
 Entering manual config mode
 Config mode entered
 Commands are
@@ -66,21 +69,21 @@ D:P,N   = Dump N bytes from EEPROM at pos P to console
 Q       = Quit
 ---------------------------------------------
 
-<<P\n>>
+P\n
 Current config
   RFM_NODE_ID     = [100]
   RFM_NETWORK_ID  = [199]
   NODE_ID         = [AAA]
 
-<<S:RFM_NODE_ID,122>>
+S:RFM_NODE_ID,122
 Setting item [RFM_NODE_ID] to [122]
 
-<<W\n>>
+W\n
 Writing config to EEPROM
 Writing block at [0]
 Successfully wrote config to EEPROM
 
-<<R\n>>
+R\n
 Reading config from EEPROM.
 Successfully read config from EEPROM.
 Current config
@@ -88,8 +91,9 @@ Current config
   RFM_NETWORK_ID  = [199]
   NODE_ID         = [AAA]
 
-<<Q\n>>
+Q\n
 Exiting interactive config mode
 Continuing startup
 Setup complete
 Looping
+```
