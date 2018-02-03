@@ -17,6 +17,9 @@ modifying it but not saving it to EEPROM.
 The library requires four things to be able to do it's magic:
  - a pointer to the config and a tag for it
  - three callback functions that interface to the config (as the library knows nothing about what is in the config)
+   - printConfig
+   - printConfigItemHelp
+   - setConfigItem
 
 ## The Process
 At sketch startup the library will try and find the config in EEPROM and if found will 
