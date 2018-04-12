@@ -14,7 +14,7 @@ in EEPROM and providing a means by which the user can view, change and store the
 sketch runs. It also allows the user to temporarily change the config for just this "session" by
 modifying it but not saving it to EEPROM.
 
-The library requires four things to be able to do it's magic:
+The library requires four things to be able to do its magic:
  - a pointer to the config and a tag for it
  - three callback functions that interface to the config (as the library knows nothing about what is in the config)
    - printConfig
